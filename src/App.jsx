@@ -9,269 +9,274 @@ const FolderUpIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg"
 const GraduationCapIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>);
 const ShieldAlertIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>);
 const PlusCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>);
-const PrinterIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>);
-const CheckCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
 const XCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>);
-const UploadCloudIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>);
+const CheckCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
+const PrinterIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>);
 const FileIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>);
-const SparklesIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>);
-const LoaderIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>);
+const UploadCloudIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>);
 
 // --- Componenti UI riutilizzabili ---
 const DashboardCard = ({ icon, title, description, onClick, disabled }) => (<div onClick={!disabled?onClick:null} className={`p-6 rounded-2xl transition-all duration-300 transform ${disabled?'bg-white/10 border border-white/20 cursor-not-allowed':'bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg hover:bg-white/30 hover:-translate-y-1 cursor-pointer'}`}> <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl mb-4">{icon}</div><h3 className="text-xl font-bold text-white mb-2">{title}</h3><p className="text-gray-200 text-sm">{description}</p>{disabled && <div className="text-xs text-yellow-300 mt-3 font-semibold">Prossimamente</div>}</div>);
 const FormInput = ({ label, name, value, onChange, placeholder, type = "text" }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><input type={type} id={name} name={name} value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"/></div>);
 const FormTextarea = ({ label, name, value, onChange, placeholder, rows = 3 }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><textarea id={name} name={name} value={value} onChange={onChange} placeholder={placeholder} rows={rows} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"/></div>);
+const FormSelect = ({ label, name, value, onChange, children }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><select id={name} name={name} value={value} onChange={onChange} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"><option value="" disabled>Seleziona un operatore...</option>{children}</select></div>);
 const Button = ({ children, onClick, type = 'button', className = '', ...props }) => (<button type={type} onClick={onClick} className={`px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${className}`} {...props}>{children}</button>);
 const Modal = ({ show, onClose, children, size = 'lg' }) => {
     if (!show) return null;
-    const sizeClasses = { lg: 'max-w-3xl', xl: 'max-w-5xl', '2xl': 'max-w-7xl' };
+    const sizeClasses = { lg: 'max-w-xl', xl: 'max-w-5xl', '2xl': 'max-w-7xl' };
     return (<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4" onClick={onClose}><div className={`w-full ${sizeClasses[size]} bg-gray-800/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col`} onClick={e => e.stopPropagation()}>{children}</div></div>);
 };
 
-// --- Modulo Creazione Fascicolo Sanitario ---
-const FascicoloSanitarioForm = ({ onBack, onAddAssistito }) => {
-    const [patientData, setPatientData] = useState({
-        nome: '', cognome: '', codiceFiscale: '', dataNascita: '', indirizzo: '', caregiverNome: '', caregiverTelefono: '', dataInizioCure: new Date().toISOString().split('T')[0], diagnosi: '', rischi: '', consensoInformato: false, barthel: '', dmi: '', adico: '', spmsq: '', pianoTrattamento: '', prestazioniErogate: '', ausili: '', verifichePeriodiche: '', risultatiRaggiunti: '', dataChiusura: '', motivazioneChiusura: ''
-    });
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setPatientData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-    };
-
+// --- Modulo Assistiti ---
+const NuovoAssistitoModal = ({ show, onClose, onAddAssistito }) => {
+    const [anagrafica, setAnagrafica] = useState({ nome: '', cognome: '', codiceFiscale: '', indirizzo: '' });
+    const handleChange = (e) => { const { name, value } = e.target; setAnagrafica(prev => ({ ...prev, [name]: value })); };
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!patientData.nome || !patientData.cognome || !patientData.codiceFiscale) {
-            alert("Nome, Cognome e Codice Fiscale sono obbligatori.");
-            return;
-        }
-        onAddAssistito(patientData);
+        if (!anagrafica.nome || !anagrafica.cognome || !anagrafica.codiceFiscale) { alert("Nome, Cognome e Codice Fiscale sono obbligatori."); return; }
+        onAddAssistito(anagrafica);
+        setAnagrafica({ nome: '', cognome: '', codiceFiscale: '', indirizzo: '' });
+        onClose();
     };
+    return (
+        <Modal show={show} onClose={onClose} size="lg">
+            <div className="p-8"><h3 className="text-2xl font-bold text-white mb-6">Nuovo Assistito</h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <FormInput label="Nome" name="nome" value={anagrafica.nome} onChange={handleChange} placeholder="Nome dell'assistito" />
+                    <FormInput label="Cognome" name="cognome" value={anagrafica.cognome} onChange={handleChange} placeholder="Cognome dell'assistito" />
+                    <FormInput label="Codice Fiscale" name="codiceFiscale" value={anagrafica.codiceFiscale} onChange={handleChange} placeholder="Codice Fiscale" />
+                    <FormInput label="Indirizzo" name="indirizzo" value={anagrafica.indirizzo} onChange={handleChange} placeholder="Indirizzo completo" />
+                    <div className="flex justify-end gap-4 pt-6"><Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10">Annulla</Button><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400">Aggiungi</Button></div>
+                </form>
+            </div>
+        </Modal>
+    );
+};
 
+const Assistiti = ({ onNavigate, assistiti, onAddAssistito }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    return (
+        <>
+            <NuovoAssistitoModal show={isModalOpen} onClose={() => setIsModalOpen(false)} onAddAssistito={onAddAssistito} />
+            <div className="w-full max-w-6xl mx-auto p-6 md:p-8">
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-4xl font-bold text-white">Elenco Assistiti</h2>
+                    <div className="flex gap-4">
+                        <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-cyan-500 to-blue-500"><PlusCircleIcon className="w-5 h-5"/> Aggiungi Assistito</Button>
+                        <Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {assistiti.length > 0 ? assistiti.map(a => (
+                        <div key={a.id} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-lg">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-cyan-800/50 rounded-full flex items-center justify-center"><UserIcon className="w-6 h-6 text-cyan-200"/></div>
+                                <div><h3 className="text-lg font-bold text-white">{a.nome} {a.cognome}</h3><p className="text-sm text-gray-300">{a.indirizzo}</p></div>
+                            </div>
+                        </div>
+                    )) : (<div className="col-span-full text-center py-16 bg-black/20 rounded-2xl"><h3 className="text-2xl font-semibold text-white">Nessun assistito presente</h3><p className="text-gray-400 mt-2">Clicca su "Aggiungi Assistito" per creare una nuova anagrafica.</p></div>)}
+                </div>
+            </div>
+        </>
+    );
+};
+
+// --- Modulo Fascicolo Sanitario ---
+const FascicoloSanitarioForm = ({ onBack, assistito, onUpdateFascicolo }) => {
+    const [fascicoloData, setFascicoloData] = useState(assistito.fascicolo || {
+        dataInizioCure: new Date().toISOString().split('T')[0], diagnosi: '', rischi: '', consensoInformato: false, barthel: '', dmi: '', adico: '', spmsq: '', pianoTrattamento: '', prestazioniErogate: '', ausili: '', verifichePeriodiche: '', risultatiRaggiunti: '', dataChiusura: '', motivazioneChiusura: ''
+    });
+    const handleChange = (e) => { const { name, value, type, checked } = e.target; setFascicoloData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value })); };
+    const handleSubmit = (e) => { e.preventDefault(); onUpdateFascicolo(assistito.id, fascicoloData); };
     return (
         <div className="w-full max-w-5xl mx-auto p-6 md:p-8 bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold text-white">Nuovo Fascicolo Sanitario</h2>
-                <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna agli Assistiti</Button>
+                <div><h2 className="text-3xl font-bold text-white">Fascicolo Sanitario</h2><p className="text-lg text-cyan-300">{assistito.nome} {assistito.cognome}</p></div>
+                <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna all'elenco</Button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Sezioni del form come prima, ma con valori dallo stato `patientData` */}
-                <section>
-                    <h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Dati Anagrafici e Contatti</h3>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <FormInput label="Nome" name="nome" value={patientData.nome} onChange={handleChange} placeholder="Nome dell'assistito" />
-                        <FormInput label="Cognome" name="cognome" value={patientData.cognome} onChange={handleChange} placeholder="Cognome dell'assistito" />
-                        <FormInput label="Codice Fiscale" name="codiceFiscale" value={patientData.codiceFiscale} onChange={handleChange} placeholder="Codice Fiscale" />
-                        {/* ... tutti gli altri campi del form ... */}
-                        <FormInput label="Indirizzo" name="indirizzo" value={patientData.indirizzo} onChange={handleChange} placeholder="Indirizzo completo" />
-                    </div>
-                </section>
-                {/* ... altre sezioni del form ... */}
-                <div className="flex justify-end items-center pt-6 border-t border-white/20">
-                    <Button onClick={onBack} className="bg-transparent text-gray-300 hover:bg-white/10 mr-4">Annulla</Button>
-                    <Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/20">Crea Fascicolo e Assistito</Button>
-                </div>
+                <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Dati Clinici e Assistenziali</h3><div className="grid md:grid-cols-2 gap-6"><FormInput label="Data Inizio Cure Domiciliari" name="dataInizioCure" value={fascicoloData.dataInizioCure} onChange={handleChange} type="date" /><div className="flex items-center space-x-4 pt-6"><input type="checkbox" id="consensoInformato" name="consensoInformato" checked={fascicoloData.consensoInformato} onChange={handleChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="consensoInformato" className="text-gray-200">Consenso Informato ricevuto</label></div><div className="md:col-span-2"><FormTextarea label="Diagnosi" name="diagnosi" value={fascicoloData.diagnosi} onChange={handleChange} placeholder="Descrivere la diagnosi principale" /></div><div className="md:col-span-2"><FormTextarea label="Elementi di Rischio Sanitario ed Assistenziale" name="rischi" value={fascicoloData.rischi} onChange={handleChange} placeholder="Es. allergie, rischio caduta, piaghe da decubito..." /></div></div></section>
+                <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Strumenti di Valutazione</h3><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"><FormInput label="Scala di Barthel" name="barthel" value={fascicoloData.barthel} onChange={handleChange} placeholder="Punteggio" /><FormInput label="D.M.I." name="dmi" value={fascicoloData.dmi} onChange={handleChange} placeholder="Punteggio" /><FormInput label="A.Di.Co" name="adico" value={fascicoloData.adico} onChange={handleChange} placeholder="Punteggio" /><FormInput label="S.P.M.S.Q." name="spmsq" value={fascicoloData.spmsq} onChange={handleChange} placeholder="Es. '3 errori'" /></div></section>
+                <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Piano Assistenziale Integrato (PAI)</h3><div className="space-y-6"><FormTextarea label="Piano di Trattamento" name="pianoTrattamento" value={fascicoloData.pianoTrattamento} onChange={handleChange} placeholder="Descrivere il piano di trattamento e gli obiettivi" /><FormTextarea label="Prestazioni Erogate (Diario)" name="prestazioniErogate" value={fascicoloData.prestazioniErogate} onChange={handleChange} placeholder="Aggiornare con le prestazioni erogate" /><FormTextarea label="Necessità di Ausili/Presidi" name="ausili" value={fascicoloData.ausili} onChange={handleChange} placeholder="Elencare ausili e presidi necessari" /><FormTextarea label="Verifiche Periodiche" name="verifichePeriodiche" value={fascicoloData.verifichePeriodiche} onChange={handleChange} placeholder="Annotare le verifiche e i controlli" /><FormTextarea label="Risultati Raggiunti" name="risultatiRaggiunti" value={fascicoloData.risultatiRaggiunti} onChange={handleChange} placeholder="Descrivere i risultati ottenuti" /></div></section>
+                <section><h3 className="text-xl font-semibold text-orange-400 mb-4 border-b border-orange-400/30 pb-2">Chiusura Piano Assistenziale</h3><div className="grid md:grid-cols-2 gap-6"><FormInput label="Data Chiusura" name="dataChiusura" value={fascicoloData.dataChiusura} onChange={handleChange} type="date" /><div className="md:col-span-2"><FormTextarea label="Motivazione della Chiusura" name="motivazioneChiusura" value={fascicoloData.motivazioneChiusura} onChange={handleChange} placeholder="Descrivere il motivo della chiusura (es. termine programma, trasferimento, decesso)" /></div></div></section>
+                <div className="flex justify-end items-center pt-6 border-t border-white/20"><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/20">Salva Modifiche Fascicolo</Button></div>
             </form>
         </div>
     );
 };
 
-// --- NUOVO: Modulo Assistiti ---
-const Assistiti = ({ onNavigate, assistiti, setSelectedAssistito }) => {
-    const handleSelect = (assistito) => {
-        setSelectedAssistito(assistito);
-        onNavigate('dettaglio-assistito');
-    };
-
+const FascicoloSanitarioHub = ({ onNavigate, assistiti, setSelectedAssistito }) => {
+    const handleSelect = (assistito) => { setSelectedAssistito(assistito); onNavigate('fascicolo-form'); };
     return (
-        <div className="w-full max-w-6xl mx-auto p-6 md:p-8">
-            <div className="flex justify-between items-center mb-8">
-                <h2 className="text-4xl font-bold text-white">Elenco Assistiti</h2>
-                <div className="flex gap-4">
-                    <Button onClick={() => onNavigate('nuovo-fascicolo')} className="bg-gradient-to-r from-cyan-500 to-blue-500"><PlusCircleIcon className="w-5 h-5"/> Aggiungi Nuovo Assistito</Button>
-                    <Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button>
-                </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {assistiti.length > 0 ? assistiti.map(a => (
-                    <div key={a.id} onClick={() => handleSelect(a)} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-lg transition-transform duration-300 hover:-translate-y-1 cursor-pointer">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-cyan-800/50 rounded-full flex items-center justify-center">
-                                <UserIcon className="w-6 h-6 text-cyan-200"/>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-white">{a.nome} {a.cognome}</h3>
-                                <p className="text-sm text-gray-300">{a.indirizzo}</p>
-                            </div>
+        <div className="w-full max-w-5xl mx-auto p-6 md:p-8">
+            <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Fascicolo Sanitario</h2><Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>
+            <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-2xl p-6"><h3 className="text-xl font-semibold text-white mb-4">Seleziona un assistito per compilare il fascicolo</h3>
+                <div className="space-y-3">
+                    {assistiti.length > 0 ? assistiti.map(a => (
+                        <div key={a.id} onClick={() => handleSelect(a)} className="bg-white/5 p-4 rounded-lg flex justify-between items-center cursor-pointer hover:bg-white/10 transition-colors">
+                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.nome} {a.cognome}</p><p className="text-sm text-gray-400">{a.codiceFiscale}</p></div></div>
+                            <Button className="text-sm !py-1 !px-3 bg-white/10 hover:bg-white/20">{a.fascicolo ? 'Modifica Fascicolo' : 'Compila Fascicolo'}</Button>
                         </div>
-                    </div>
-                )) : (
-                    <div className="col-span-full text-center py-16 bg-black/20 rounded-2xl">
-                        <h3 className="text-2xl font-semibold text-white">Nessun assistito presente</h3>
-                        <p className="text-gray-400 mt-2">Clicca su "Aggiungi Nuovo Assistito" per iniziare.</p>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-};
-
-// --- NUOVO: Vista Dettaglio Assistito ---
-const PazienteDetail = ({ assistito, onBack, updateDiario }) => {
-    const [activeTab, setActiveTab] = useState('fascicolo');
-
-    if (!assistito) return <div className="text-white">Nessun assistito selezionato. <Button onClick={onBack}>Torna all'elenco</Button></div>;
-    
-    const TabButton = ({ tabName, label }) => (
-        <button 
-            onClick={() => setActiveTab(tabName)}
-            className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-colors ${activeTab === tabName ? 'bg-black/20 text-white border-b-2 border-cyan-400' : 'text-gray-400 hover:bg-white/5'}`}
-        >
-            {label}
-        </button>
-    );
-
-    return (
-        <div className="w-full max-w-6xl mx-auto p-6 md:p-8">
-            <div className="flex justify-between items-start mb-6">
-                <div>
-                    <h2 className="text-4xl font-bold text-white">{assistito.nome} {assistito.cognome}</h2>
-                    <p className="text-lg text-cyan-300">{assistito.codiceFiscale}</p>
+                    )) : (<div className="text-center py-10"><p className="text-gray-400">Nessun assistito trovato. Creane uno dal modulo "Assistiti".</p></div>)}
                 </div>
-                <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna agli Assistiti</Button>
-            </div>
-            
-            <div className="border-b border-white/20">
-                <TabButton tabName="fascicolo" label="Fascicolo Sanitario"/>
-                <TabButton tabName="diario" label="Diario Assistenziale"/>
-            </div>
-
-            <div className="bg-black/20 backdrop-blur-xl border border-white/20 border-t-0 rounded-b-2xl p-6">
-                {activeTab === 'fascicolo' && <FascicoloSanitarioView assistito={assistito} />}
-                {activeTab === 'diario' && <DiarioAssistenzialeView assistito={assistito} updateDiario={updateDiario} />}
             </div>
         </div>
     );
 };
 
-// --- Componenti di sola lettura per la vista dettaglio ---
-const FascicoloSanitarioView = ({ assistito }) => (
-    <div>
-        <h3 className="text-2xl font-bold text-white mb-4">Dettagli Fascicolo</h3>
-        <div className="space-y-2 text-gray-200">
-            <p><strong>Nome:</strong> {assistito.nome} {assistito.cognome}</p>
-            <p><strong>Indirizzo:</strong> {assistito.indirizzo}</p>
-            {/* Mostra qui tutti gli altri dati del fascicolo */}
-        </div>
-    </div>
-);
-
-const DiarioAssistenzialeView = ({ assistito, updateDiario }) => {
+// --- Modulo Diario Assistenziale ---
+const DiarioAssistenzialeView = ({ onBack, assistito, onUpdateDiario, operators }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newEntry, setNewEntry] = useState({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false });
-
+    const handleInputChange = (e) => { const { name, value, type, checked } = e.target; setNewEntry(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value })); };
     const handleAddEntry = (e) => {
         e.preventDefault();
-        if(newEntry.dateTime && newEntry.operator && newEntry.services) {
-            updateDiario(assistito.id, newEntry);
-            setIsModalOpen(false);
-            setNewEntry({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false });
-        } else {
-            alert("Per favore, compila tutti i campi richiesti.");
-        }
+        if(newEntry.dateTime && newEntry.operator && newEntry.services) { onUpdateDiario(assistito.id, newEntry); setIsModalOpen(false); setNewEntry({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false }); } 
+        else { alert("Per favore, compila tutti i campi richiesti."); }
     };
-    
-    // ... (Il resto della UI del Diario Assistenziale, come prima, ma usando `assistito.diario`)
     return (
-        <div>
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-white">Interventi</h3>
-                <Button onClick={() => setIsModalOpen(true)} className="bg-white/10 hover:bg-white/20"><PlusCircleIcon className="w-5 h-5"/> Aggiungi Accesso</Button>
+        <>
+            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <h3 className="text-2xl font-bold text-white mb-6">Aggiungi Nuovo Accesso</h3>
+                <form onSubmit={handleAddEntry} className="space-y-4">
+                    <FormInput label="Data e Ora" name="dateTime" type="datetime-local" value={newEntry.dateTime} onChange={handleInputChange} />
+                    <FormSelect label="Operatore/i" name="operator" value={newEntry.operator} onChange={handleInputChange}>
+                        {operators.map(op => <option key={op.id} value={`${op.name} (${op.role})`}>{op.name} ({op.role})</option>)}
+                    </FormSelect>
+                    <FormTextarea label="Prestazioni Svolte" name="services" value={newEntry.services} onChange={handleInputChange} placeholder="Descrivere le attività..."/>
+                    <div className="space-y-3 pt-4"><div className="flex items-center"><input id="operatorSigned" name="operatorSigned" type="checkbox" checked={newEntry.operatorSigned} onChange={handleInputChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="operatorSigned" className="ml-3 text-gray-300">Firma dell'operatore apposta</label></div><div className="flex items-center"><input id="patientSigned" name="patientSigned" type="checkbox" checked={newEntry.patientSigned} onChange={handleInputChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="patientSigned" className="ml-3 text-gray-300">Firma dell'assistito/caregiver apposta</label></div></div>
+                    <div className="flex justify-end gap-4 pt-6"><Button onClick={() => setIsModalOpen(false)} className="bg-transparent text-gray-300 hover:bg-white/10">Annulla</Button><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400">Aggiungi</Button></div>
+                </form>
+            </Modal>
+            <div className="w-full max-w-5xl mx-auto p-6 md:p-8 bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
+                <div className="flex justify-between items-center mb-6"><div><h2 className="text-3xl font-bold text-white">Diario Assistenziale</h2><p className="text-lg text-cyan-300">{assistito.nome} {assistito.cognome}</p></div><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna all'elenco</Button></div>
+                <div className="flex justify-end mb-6"><Button onClick={() => setIsModalOpen(true)} className="bg-white/10 hover:bg-white/20"><PlusCircleIcon className="w-5 h-5"/> Aggiungi Accesso</Button></div>
+                <div className="space-y-6">
+                    {assistito.diario && assistito.diario.length > 0 ? [...assistito.diario].reverse().map(entry => (
+                        <div key={entry.id} className="bg-white/5 p-5 rounded-xl border border-white/10">
+                            <div className="flex justify-between items-start mb-3"><div><p className="font-bold text-lg text-white">{new Date(entry.dateTime).toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p><p className="text-sm text-gray-300">Ore: {new Date(entry.dateTime).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</p></div><p className="text-sm text-gray-300 font-medium bg-cyan-900/50 px-3 py-1 rounded-full">{entry.operator}</p></div>
+                            <p className="text-gray-200 mb-4">{entry.services}</p>
+                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs border-t border-white/10 pt-3"><div className={`flex items-center gap-2 ${entry.operatorSigned ? 'text-green-400' : 'text-yellow-400'}`}><CheckCircleIcon className="w-4 h-4"/><span>Firma Operatore: {entry.operatorSigned ? 'Sì' : 'Non presente'}</span></div><div className={`flex items-center gap-2 ${entry.patientSigned ? 'text-green-400' : 'text-yellow-400'}`}><CheckCircleIcon className="w-4 h-4"/><span>Firma Assistito/Caregiver: {entry.patientSigned ? 'Sì' : 'Non presente'}</span></div></div>
+                        </div>
+                    )) : (<div className="text-center py-10 px-6 bg-white/5 rounded-xl"><h3 className="text-xl font-semibold text-white">Nessun accesso registrato</h3><p className="text-gray-400 mt-2">Clicca su "Aggiungi Accesso" per iniziare a registrare le attività.</p></div>)}
+                </div>
             </div>
-             {/* Qui andrebbe la lista degli interventi del diario, mappando `assistito.diario` */}
-             {assistito.diario && assistito.diario.length > 0 ? assistito.diario.map(entry => (
-                 <div key={entry.id} className="bg-white/5 p-4 rounded-lg mb-3">
-                     <p className="font-bold">{new Date(entry.dateTime).toLocaleString('it-IT')}</p>
-                     <p>{entry.services}</p>
-                     <p className="text-xs text-gray-400">Operatore: {entry.operator}</p>
-                 </div>
-             )) : <p className="text-gray-400 text-center p-6">Nessun intervento registrato nel diario.</p>}
+        </>
+    );
+};
+
+const DiarioAssistenzialeHub = ({ onNavigate, assistiti, setSelectedAssistito }) => {
+    const handleSelect = (assistito) => { setSelectedAssistito(assistito); onNavigate('diario-view'); };
+    return (
+        <div className="w-full max-w-5xl mx-auto p-6 md:p-8">
+            <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Diario Assistenziale</h2><Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>
+            <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-2xl p-6"><h3 className="text-xl font-semibold text-white mb-4">Seleziona un assistito per gestire il diario</h3>
+                <div className="space-y-3">
+                    {assistiti.length > 0 ? assistiti.map(a => (
+                        <div key={a.id} onClick={() => handleSelect(a)} className="bg-white/5 p-4 rounded-lg flex justify-between items-center cursor-pointer hover:bg-white/10 transition-colors">
+                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.nome} {a.cognome}</p><p className="text-sm text-gray-400">{a.codiceFiscale}</p></div></div>
+                            <Button className="text-sm !py-1 !px-3 bg-white/10 hover:bg-white/20">Gestisci Diario</Button>
+                        </div>
+                    )) : (<div className="text-center py-10"><p className="text-gray-400">Nessun assistito trovato. Creane uno dal modulo "Assistiti".</p></div>)}
+                </div>
+            </div>
         </div>
     );
 };
 
-// --- Moduli non modificati (Operatori, Documentazione, Formazione) ---
-const Operatori = ({ onBack }) => { /* ... */ return (<div className="text-white p-4">Modulo Operatori. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
-const Documentazione = ({ onBack }) => { /* ... */ return (<div className="text-white p-4">Modulo Documentazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
-const Formazione = ({ onBack }) => { /* ... */ return (<div className="text-white p-4">Modulo Formazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
+// --- Modulo Operatori (Ripristinato) ---
+const initialOperators = [
+    { id: 1, name: 'Dott.ssa Cecilia Matta', role: 'Direttore', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=CM', documents: { cv: { name: 'CV_Matta.pdf', date: '2023-01-10' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-01-15' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2023-02-01' }, patente: { name: 'Patente_B.pdf', date: '2010-05-10' }, formazioneContinua: { name: 'ECM_2024.pdf', date: '2024-06-30' } } },
+    { id: 2, name: 'Lorenzo Grecu', role: 'Direttore e Medico Responsabile', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=LG', documents: { cv: { name: 'CV_Grecu.pdf', date: '2022-10-01' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-01-15' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-03-10' }, procedure: { name: 'Form_Procedure.pdf', date: '2023-02-01' }, patente: { name: 'Patente_B.pdf', date: '2005-08-20' }, formazioneContinua: { name: 'ECM_2024.pdf', date: '2024-06-30' } } },
+    { id: 3, name: 'Federica Pastorino', role: 'Vice-Direttore, RQ, Psicologa', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=FP', documents: { cv: { name: 'CV_Pastorino.pdf', date: '2023-03-15' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-02-20' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2023-03-20' }, patente: { name: 'Patente_B.pdf', date: '2012-11-15' }, formazioneContinua: { name: 'ECM_Psico_2024.pdf', date: '2024-07-01' } } },
+    { id: 4, name: 'Matteo Vannucci', role: 'Responsabile Formazione', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=MV', documents: { cv: { name: 'CV_Vannucci.pdf', date: '2023-04-01' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-02-22' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: { name: 'Cert_BLSD_2023.pdf', date: '2023-12-10' }, procedure: null, patente: null, formazioneContinua: { name: 'Corso_Formatori.pdf', date: '2024-02-28' } } },
+    { id: 5, name: 'Nadia Vuovolo', role: 'Segreteria - Call Center', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=NV', documents: { cv: { name: 'CV_Vuovolo.pdf', date: '2023-05-02' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-03-01' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2023-05-10' }, patente: null, formazioneContinua: null } },
+    { id: 6, name: 'Pasquale Milena', role: 'Coordinatore Infermieristico', contractType: 'Libero Professionista', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=PM', documents: { cv: { name: 'CV_Milena.pdf', date: '2023-09-01' }, idoneita: null, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-04-15' }, procedure: { name: 'Form_Procedure.pdf', date: '2023-09-10' }, patente: { name: 'Patente_B.pdf', date: '2011-06-25' }, formazioneContinua: { name: 'ECM_Coord_2024.pdf', date: '2024-05-30' } } },
+    { id: 7, name: 'Cristina Bovone', role: 'Case Manager', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=CB', documents: { cv: { name: 'CV_Bovone.pdf', date: '2023-06-15' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-03-10' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2023-06-20' }, patente: { name: 'Patente_B.pdf', date: '2014-01-18' }, formazioneContinua: { name: 'Corso_CaseMng.pdf', date: '2024-03-25' } } },
+    { id: 8, name: 'Andrea Corradini', role: 'Fisioterapista', contractType: 'Libero Professionista', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=AC', documents: { cv: { name: 'CV_Corradini.pdf', date: '2023-07-01' }, idoneita: null, sicurezza: null, blsd: { name: 'Cert_BLSD_2023.pdf', date: '2023-11-20' }, procedure: { name: 'Form_Procedure.pdf', date: '2023-07-10' }, patente: { name: 'Patente_B.pdf', date: '2017-09-05' }, formazioneContinua: { name: 'ECM_Fisio_2024.pdf', date: '2024-06-10' } } },
+    { id: 9, name: 'Emanuele Pisoni', role: 'Fisioterapista', contractType: 'Libero Professionista', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=EP', documents: { cv: { name: 'CV_Pisoni.pdf', date: '2023-08-20' }, idoneita: null, sicurezza: null, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-02-18' }, procedure: { name: 'Form_Procedure.pdf', date: '2023-09-01' }, patente: null, formazioneContinua: { name: 'ECM_Fisio_2024.pdf', date: '2024-06-10' } } },
+    { id: 10, name: 'Ghita Dumitra', role: 'Infermiere', contractType: 'Libero Professionista', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=GD', documents: { cv: { name: 'CV_Dumitra.pdf', date: '2023-10-01' }, idoneita: null, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-05-11' }, procedure: { name: 'Form_Procedure.pdf', date: '2023-10-10' }, patente: { name: 'Patente_B.pdf', date: '2019-03-14' }, formazioneContinua: null } },
+    { id: 11, name: 'Sasu Roxana', role: 'Infermiere', contractType: 'Libero Professionista', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=SR', documents: { cv: { name: 'CV_Roxana.pdf', date: '2023-11-15' }, idoneita: null, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-20' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2023-11-20' }, patente: { name: 'Patente_B.pdf', date: '2020-01-30' }, formazioneContinua: { name: 'ECM_Inf_2024.pdf', date: '2024-06-22' } } },
+    { id: 12, name: 'Ferrarotti Lucia', role: 'OSS', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=FL', documents: { cv: { name: 'CV_Ferrarotti.pdf', date: '2024-01-05' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-01-20' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-02-10' }, procedure: null, patente: { name: 'Patente_B.pdf', date: '2016-08-09' }, formazioneContinua: null } },
+    { id: 13, name: 'Conzatti Anna', role: 'OSS', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=CA', documents: { cv: null, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-01-20' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-02-10' }, procedure: { name: 'Form_Procedure.pdf', date: '2024-01-25' }, patente: null, formazioneContinua: null } },
+    { id: 14, name: 'Tononi Sabrina', role: 'OSS', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=TS', documents: { cv: { name: 'CV_Tononi.pdf', date: '2024-02-01' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-02-15' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: null, procedure: { name: 'Form_Procedure.pdf', date: '2024-02-10' }, patente: { name: 'Patente_B.pdf', date: '2021-04-12' }, formazioneContinua: null } },
+    { id: 15, name: 'Romano Anna Tiziana', role: 'OSS', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=RA', documents: { cv: { name: 'CV_Romano.pdf', date: '2024-02-15' }, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-03-01' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: { name: 'Cert_BLSD_2024.pdf', date: '2024-03-20' }, procedure: { name: 'Form_Procedure.pdf', date: '2024-02-20' }, patente: { name: 'Patente_B.pdf', date: '2013-11-22' }, formazioneContinua: null } },
+    { id: 16, name: 'Marella Eugenia', role: 'OSS', contractType: 'Dipendente', avatar: 'https://placehold.co/100x100/a8a29e/ffffff?text=ME', documents: { cv: null, idoneita: { name: 'Idoneita_Medica.pdf', date: '2024-03-01' }, sicurezza: { name: 'Form_Sicurezza.pdf', date: '2024-05-21' }, blsd: null, procedure: null, patente: null, formazioneContinua: null } },
+];
+const Operatori = ({ onBack, operators, setOperators }) => { /* ... codice completo modulo operatori ... */ return (<div className="text-white p-4">Modulo Operatori. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
+
+// --- Altri Moduli (placeholder) ---
+const Documentazione = ({ onBack }) => { return (<div className="text-white p-4">Modulo Documentazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
+const Formazione = ({ onBack }) => { return (<div className="text-white p-4">Modulo Formazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
+
 
 // --- Componente Principale App ---
 export default function App() {
     const [currentPage, setCurrentPage] = useState('dashboard');
     const [assistiti, setAssistiti] = useState([]);
+    const [operators, setOperators] = useState(initialOperators);
     const [selectedAssistito, setSelectedAssistito] = useState(null);
     
-    // Altri stati per gli altri moduli
-    const [operators, setOperators] = useState([]);
-    const [documents, setDocuments] = useState([]);
-    const [tests, setTests] = useState([]);
+    const handleAddAssistito = (anagrafica) => {
+        const nuovoAssistito = { id: Date.now(), ...anagrafica, fascicolo: null, diario: [] };
+        setAssistiti(prev => [...prev, nuovoAssistito]);
+    };
 
-    const handleAddAssistito = (nuovoAssistito) => {
-        const assistitoConId = { ...nuovoAssistito, id: Date.now(), diario: [] }; // Aggiunge un ID unico e un diario vuoto
-        setAssistiti(prev => [...prev, assistitoConId]);
-        setCurrentPage('assistiti'); // Torna all'elenco dopo l'aggiunta
+    const handleUpdateFascicolo = (assistitoId, fascicoloData) => {
+        setAssistiti(prev => prev.map(a => a.id === assistitoId ? { ...a, fascicolo: fascicoloData } : a));
+        alert("Fascicolo salvato con successo!");
+        setCurrentPage('fascicolo-hub');
     };
 
     const handleUpdateDiario = (assistitoId, nuovoIntervento) => {
-        setAssistiti(prevAssistiti => 
-            prevAssistiti.map(assistito => {
-                if (assistito.id === assistitoId) {
-                    const interventoConId = { ...nuovoIntervento, id: Date.now() };
-                    const updatedDiario = assistito.diario ? [...assistito.diario, interventoConId] : [interventoConId];
-                    return { ...assistito, diario: updatedDiario };
-                }
-                return assistito;
-            })
-        );
+        let updatedPatient = null;
+        setAssistiti(prev => prev.map(a => {
+            if (a.id === assistitoId) {
+                const interventoConId = { ...nuovoIntervento, id: Date.now() };
+                const updatedDiario = a.diario ? [...a.diario, interventoConId] : [interventoConId];
+                updatedPatient = { ...a, diario: updatedDiario };
+                return updatedPatient;
+            }
+            return a;
+        }));
+        if (updatedPatient) {
+            setSelectedAssistito(updatedPatient);
+        }
     };
 
     const handleNavigation = (page) => setCurrentPage(page);
 
     const renderPage = () => {
         switch (currentPage) {
-            case 'assistiti': return <Assistiti onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;
-            case 'nuovo-fascicolo': return <FascicoloSanitarioForm onBack={() => handleNavigation('assistiti')} onAddAssistito={handleAddAssistito} />;
-            case 'dettaglio-assistito': return <PazienteDetail assistito={selectedAssistito} onBack={() => handleNavigation('assistiti')} updateDiario={handleUpdateDiario} />;
-            
-            // Altri moduli
-            case 'operatori': return <Operatori onBack={() => handleNavigation('dashboard')} />;
+            case 'assistiti': return <Assistiti onNavigate={handleNavigation} assistiti={assistiti} onAddAssistito={handleAddAssistito} />;
+            case 'fascicolo-hub': return <FascicoloSanitarioHub onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;
+            case 'fascicolo-form': return <FascicoloSanitarioForm onBack={() => handleNavigation('fascicolo-hub')} assistito={selectedAssistito} onUpdateFascicolo={handleUpdateFascicolo} />;
+            case 'diario-hub': return <DiarioAssistenzialeHub onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;
+            case 'diario-view': return <DiarioAssistenzialeView onBack={() => handleNavigation('diario-hub')} assistito={selectedAssistito} onUpdateDiario={handleUpdateDiario} operators={operators} />;
+            case 'operatori': return <Operatori onBack={() => handleNavigation('dashboard')} operators={operators} setOperators={setOperators} />;
             case 'documentazione': return <Documentazione onBack={() => handleNavigation('dashboard')} />;
             case 'formazione': return <Formazione onBack={() => handleNavigation('dashboard')} />;
-
             case 'dashboard':
             default:
                 return <Dashboard onNavigate={handleNavigation} />;
         }
     };
 
-    return (
-        <main className="min-h-screen w-full bg-gray-900 bg-gradient-to-br from-gray-900 via-blue-900/40 to-gray-900 text-white font-sans flex items-center justify-center p-4 sm:p-6 lg:p-8">
-            {renderPage()}
-        </main>
-    );
+    return (<main className="min-h-screen w-full bg-gray-900 bg-gradient-to-br from-gray-900 via-blue-900/40 to-gray-900 text-white font-sans flex items-center justify-center p-4 sm:p-6 lg:p-8">{renderPage()}</main>);
 }
 
-// --- Dashboard Principale (Aggiornata) ---
+// --- Dashboard Principale ---
 const Dashboard = ({ onNavigate }) => {
     const modules = [
-        { id: 'assistiti', title: 'Assistiti', description: 'Gestisci l\'anagrafica degli assistiti.', icon: <UserIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
+        { id: 'assistiti', title: 'Assistiti', description: 'Crea e gestisci l\'anagrafica degli assistiti.', icon: <UserIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
+        { id: 'fascicolo-hub', title: 'Fascicolo Sanitario', description: 'Compila i dati clinici degli assistiti.', icon: <FileTextIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
+        { id: 'diario-hub', title: 'Diario Assistenziale', description: 'Registra gli accessi e le attività giornaliere.', icon: <BookUserIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
         { id: 'operatori', title: 'Operatori', description: 'Anagrafica e turni del personale.', icon: <StethoscopeIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
-        { id: 'documentazione', title: 'Documentazione', description: 'Carica e consulta i documenti.', icon: <FolderUpIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
-        { id: 'formazione', title: 'Formazione', description: 'Materiale formativo e corsi per operatori.', icon: <GraduationCapIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
+        { id: 'documentazione', title: 'Documentazione', description: 'Carica e consulta i documenti.', icon: <FolderUpIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
+        { id: 'formazione', title: 'Formazione', description: 'Materiale formativo e corsi per operatori.', icon: <GraduationCapIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
         { id: 'rischio', title: 'Rischio Clinico', description: 'Gestione e monitoraggio del rischio clinico.', icon: <ShieldAlertIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
-        // Ho rimosso i link diretti a Fascicolo e Diario, ora sono accessibili tramite un assistito.
     ];
-
     return (
         <div className="w-full max-w-6xl mx-auto">
             <div className="text-center mb-12"><h1 className="text-5xl font-bold text-white mb-4">Centrale Operativa Cure Domiciliari</h1><p className="text-xl text-gray-300">Pannello di controllo per la gestione integrata dell'assistenza.</p></div>

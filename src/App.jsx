@@ -5,9 +5,9 @@ import React, { useState, useRef, useEffect } from 'react';
 // <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 // --- Configurazione Supabase ---
-// Le chiavi verranno inserite qui. Sostituisci con le tue chiavi del progetto Supabase.
-const supabaseUrl = 'YOUR_SUPABASE_URL'; 
-const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+// Chiavi del tuo progetto Supabase inserite.
+const supabaseUrl = 'https://gchjwdqlrtopxfbcafun.supabase.co'; 
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjaGp3ZHFscnRvcHhmYmNhZnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIzMDYyNTEsImV4cCI6MjA2Nzg4MjI1MX0.LAFQBIhQOr_pvjMdFaUslZUHOAUdHCmOVfSYQF8QkeY';
 
 // --- Icone SVG ---
 const UserIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>);
@@ -416,8 +416,13 @@ export default function App() {
     const handleNavigation = (page) => setCurrentPage(page);
 
     const renderPage = () => {
-        if (!supabaseClient) {
-            return <div className="text-white text-center text-xl">Inizializzazione della connessione sicura...</div>
+        if (!supabaseClient || supabaseUrl === 'YOUR_SUPABASE_URL') {
+            return (
+                <div className="text-white text-center p-8 bg-red-900/50 rounded-lg">
+                    <h2 className="text-2xl font-bold mb-2">Configurazione Mancante</h2>
+                    <p>Per favore, inserisci le tue chiavi Supabase nel file `App.jsx` per continuare.</p>
+                </div>
+            );
         }
         switch (currentPage) {
             case 'assistiti': return <Assistiti onNavigate={handleNavigation} assistiti={assistiti} onAddAssistito={handleAddAssistito} />;

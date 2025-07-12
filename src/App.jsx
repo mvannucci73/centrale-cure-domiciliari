@@ -1,4 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
+import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// --- Configurazione Firebase ---
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+let app, db, auth, storage;
+if (firebaseConfig.apiKey) {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    storage = getStorage(app); // Inizializzazione di Firebase Storage
+}
 
 // --- Icone SVG ---
 const UserIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>);
@@ -234,7 +250,7 @@ const Documentazione = ({ onNavigate, documents, onAddDocumento }) => {
                     {documents.length > 0 ? documents.map(doc => (
                         <div key={doc.id} className="bg-white/5 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-4">
                             <div className="flex items-center gap-4"><div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0"><FileTextIcon className="w-6 h-6 text-gray-300"/></div><div><h3 className="text-lg font-bold text-white">{doc.title}</h3><p className="text-sm text-gray-400">Versione: {doc.version} - Tipo: {doc.type}</p></div></div>
-                            <Button onClick={() => window.open(doc.url, '_blank')} className="bg-white/10 hover:bg-white/20 text-sm">Visualizza</Button>
+                            <Button onClick={() => window.open(doc.url, '_blank')} className="bg-white/10 hover:bg-white/20 text-sm" disabled={!doc.url}>Visualizza</Button>
                         </div>
                     )) : (<div className="text-center py-16"><h3 className="text-2xl font-semibold text-white">Nessun documento caricato</h3><p className="text-gray-400 mt-2">Clicca su "Carica Documento" per iniziare.</p></div>)}
                 </div>
@@ -253,7 +269,54 @@ export default function App() {
     const [operators, setOperators] = useState(initialOperators);
     const [documents, setDocuments] = useState([]);
     const [selectedAssistito, setSelectedAssistito] = useState(null);
+    const [isAuthReady, setIsAuthReady] = useState(false);
+    const [userId, setUserId] = useState(null);
+
+    // Effetto per l'autenticazione e il setup dei listener
+    useEffect(() => {
+        if (!auth) return;
     
+        const performInitialSignIn = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Initial sign-in failed:", error);
+            }
+        };
+    
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserId(user.uid);
+                setIsAuthReady(true);
+            } else {
+                // Se non c'è utente, prova a fare il login
+                performInitialSignIn();
+            }
+        });
+    
+        return () => unsubscribe();
+    }, []);
+    
+
+    // Effetto per sincronizzare i documenti con Firestore
+    useEffect(() => {
+        if (!isAuthReady || !db) return;
+        
+        const documentsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'documents');
+        const unsubscribeDocs = onSnapshot(documentsCollection, (snapshot) => {
+            const docsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setDocuments(docsList);
+        }, (error) => {
+            console.error("Firestore Snapshot Error:", error);
+        });
+
+        return () => unsubscribeDocs();
+    }, [isAuthReady, appId]);
+
     const handleAddAssistito = (anagrafica) => {
         const nuovoAssistito = { id: Date.now(), ...anagrafica, fascicolo: null, diario: [] };
         setAssistiti(prev => [...prev, nuovoAssistito]);
@@ -281,18 +344,36 @@ export default function App() {
         }
     };
     
-    const handleAddDocumento = (docData) => {
-        const fileUrl = URL.createObjectURL(docData.file);
-        const newDocument = {
-            id: Date.now(),
-            title: docData.title,
-            version: docData.version,
-            type: docData.type,
-            uploadDate: new Date().toLocaleDateString('it-IT'),
-            url: fileUrl,
-            file: docData.file
-        };
-        setDocuments(prev => [newDocument, ...prev]);
+    const handleAddDocumento = async (docData) => {
+        if (!db || !isAuthReady || !storage) {
+            alert("Database o Storage non pronti. Impossibile salvare.");
+            return;
+        }
+        try {
+            // 1. Carica il file su Firebase Storage
+            const storageRef = ref(storage, `documents/${Date.now()}_${docData.file.name}`);
+            await uploadBytes(storageRef, docData.file);
+
+            // 2. Ottieni l'URL di download permanente
+            const downloadURL = await getDownloadURL(storageRef);
+
+            // 3. Salva i metadati e l'URL su Firestore
+            const docToSave = {
+                title: docData.title,
+                version: docData.version,
+                type: docData.type,
+                fileName: docData.file.name,
+                uploadDate: new Date().toISOString(),
+                url: downloadURL, // Salva l'URL permanente
+            };
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'documents'), docToSave);
+            
+            alert("Documento caricato e salvato con successo!");
+
+        } catch (error) {
+            console.error("Errore nel salvataggio del documento: ", error);
+            alert("Si è verificato un errore durante il salvataggio.");
+        }
     };
 
     const handleNavigation = (page) => setCurrentPage(page);

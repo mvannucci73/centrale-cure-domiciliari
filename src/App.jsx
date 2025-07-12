@@ -11,12 +11,13 @@ const ShieldAlertIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/s
 const PlusCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>);
 const XCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>);
 const CheckCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
+const UploadCloudIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>);
 
 // --- Componenti UI riutilizzabili ---
 const DashboardCard = ({ icon, title, description, onClick, disabled }) => (<div onClick={!disabled?onClick:null} className={`p-6 rounded-2xl transition-all duration-300 transform ${disabled?'bg-white/10 border border-white/20 cursor-not-allowed':'bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg hover:bg-white/30 hover:-translate-y-1 cursor-pointer'}`}> <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl mb-4">{icon}</div><h3 className="text-xl font-bold text-white mb-2">{title}</h3><p className="text-gray-200 text-sm">{description}</p>{disabled && <div className="text-xs text-yellow-300 mt-3 font-semibold">Prossimamente</div>}</div>);
 const FormInput = ({ label, name, value, onChange, placeholder, type = "text" }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><input type={type} id={name} name={name} value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"/></div>);
 const FormTextarea = ({ label, name, value, onChange, placeholder, rows = 3 }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><textarea id={name} name={name} value={value} onChange={onChange} placeholder={placeholder} rows={rows} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"/></div>);
-const FormSelect = ({ label, name, value, onChange, children }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><select id={name} name={name} value={value} onChange={onChange} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"><option value="" disabled>Seleziona un operatore...</option>{children}</select></div>);
+const FormSelect = ({ label, name, value, onChange, children }) => (<div><label htmlFor={name} className="block text-sm font-medium text-gray-200 mb-1">{label}</label><select id={name} name={name} value={value} onChange={onChange} className="w-full bg-white/10 border border-white/20 rounded-lg py-2 px-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition">{children}</select></div>);
 const Button = ({ children, onClick, type = 'button', className = '', ...props }) => (<button type={type} onClick={onClick} className={`px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${className}`} {...props}>{children}</button>);
 const Modal = ({ show, onClose, children, size = 'lg' }) => {
     if (!show) return null;
@@ -187,14 +188,62 @@ const DiarioAssistenzialeHub = ({ onNavigate, assistiti, setSelectedAssistito })
     );
 };
 
-// --- Modulo Operatori (Ripristinato) ---
+// --- Modulo Operatori ---
 const initialOperators = [
     { id: 1, name: 'Dott.ssa Cecilia Matta', role: 'Direttore' }, { id: 2, name: 'Lorenzo Grecu', role: 'Direttore e Medico Responsabile' }, { id: 3, name: 'Federica Pastorino', role: 'Vice-Direttore, RQ, Psicologa' }, { id: 4, name: 'Matteo Vannucci', role: 'Responsabile Formazione' }, { id: 5, name: 'Nadia Vuovolo', role: 'Segreteria - Call Center' }, { id: 6, name: 'Pasquale Milena', role: 'Coordinatore Infermieristico' }, { id: 7, name: 'Cristina Bovone', role: 'Case Manager' }, { id: 8, name: 'Andrea Corradini', role: 'Fisioterapista' }, { id: 9, name: 'Emanuele Pisoni', role: 'Fisioterapista' }, { id: 10, name: 'Ghita Dumitra', role: 'Infermiere' }, { id: 11, name: 'Sasu Roxana', role: 'Infermiere' }, { id: 12, name: 'Ferrarotti Lucia', role: 'OSS' }, { id: 13, name: 'Conzatti Anna', role: 'OSS' }, { id: 14, name: 'Tononi Sabrina', role: 'OSS' }, { id: 15, name: 'Romano Anna Tiziana', role: 'OSS' }, { id: 16, name: 'Marella Eugenia', role: 'OSS' },
 ];
 const Operatori = ({ onBack, operators }) => { return (<div className="w-full max-w-6xl mx-auto p-6 md:p-8"><div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Elenco Operatori</h2><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{operators.map(op => (<div key={op.id} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-lg"><h3 className="text-lg font-bold text-white">{op.name}</h3><p className="text-sm text-cyan-300">{op.role}</p></div>))}</div></div>); };
 
+
+// --- Modulo Documentazione ---
+const NuovoDocumentoModal = ({ show, onClose, onAddDocumento }) => {
+    const [docData, setDocData] = useState({ title: '', version: '', type: 'Procedura', file: null });
+    const handleFileChange = (e) => { setDocData(prev => ({ ...prev, file: e.target.files[0] })); };
+    const handleChange = (e) => { const { name, value } = e.target; setDocData(prev => ({ ...prev, [name]: value })); };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!docData.title || !docData.file) { alert("Titolo e file sono obbligatori."); return; }
+        onAddDocumento(docData);
+        setDocData({ title: '', version: '', type: 'Procedura', file: null });
+        onClose();
+    };
+    return (
+        <Modal show={show} onClose={onClose} size="lg">
+            <div className="p-8"><h3 className="text-2xl font-bold text-white mb-6">Carica Nuovo Documento</h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <FormInput label="Titolo Documento" name="title" value={docData.title} onChange={handleChange} placeholder="Es. Procedura Igiene Mani" />
+                    <div className="grid grid-cols-2 gap-4">
+                        <FormInput label="Versione" name="version" value={docData.version} onChange={handleChange} placeholder="Es. 1.0" />
+                        <FormSelect label="Tipo" name="type" value={docData.type} onChange={handleChange}><option>Procedura</option><option>Linea Guida</option></FormSelect>
+                    </div>
+                    <div><label className="block text-sm font-medium text-gray-200 mb-1">File PDF</label><input type="file" name="file" onChange={handleFileChange} accept="application/pdf" className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-200 hover:file:bg-cyan-500/30"/></div>
+                    <div className="flex justify-end gap-4 pt-6"><Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10">Annulla</Button><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400">Carica Documento</Button></div>
+                </form>
+            </div>
+        </Modal>
+    );
+};
+const Documentazione = ({ onNavigate, documents, onAddDocumento }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    return (
+        <>
+            <NuovoDocumentoModal show={isModalOpen} onClose={() => setIsModalOpen(false)} onAddDocumento={onAddDocumento} />
+            <div className="w-full max-w-6xl mx-auto p-6 md:p-8">
+                <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Documentazione</h2><div className="flex gap-4"><Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-cyan-500 to-blue-500"><UploadCloudIcon className="w-5 h-5"/> Carica Documento</Button><Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div></div>
+                <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-2xl p-6 space-y-4">
+                    {documents.length > 0 ? documents.map(doc => (
+                        <div key={doc.id} className="bg-white/5 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div className="flex items-center gap-4"><div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0"><FileTextIcon className="w-6 h-6 text-gray-300"/></div><div><h3 className="text-lg font-bold text-white">{doc.title}</h3><p className="text-sm text-gray-400">Versione: {doc.version} - Tipo: {doc.type}</p></div></div>
+                            <Button onClick={() => window.open(doc.url, '_blank')} className="bg-white/10 hover:bg-white/20 text-sm">Visualizza</Button>
+                        </div>
+                    )) : (<div className="text-center py-16"><h3 className="text-2xl font-semibold text-white">Nessun documento caricato</h3><p className="text-gray-400 mt-2">Clicca su "Carica Documento" per iniziare.</p></div>)}
+                </div>
+            </div>
+        </>
+    );
+};
+
 // --- Altri Moduli (placeholder) ---
-const Documentazione = ({ onBack }) => { return (<div className="text-white p-4">Modulo Documentazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
 const Formazione = ({ onBack }) => { return (<div className="text-white p-4">Modulo Formazione. <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div>); };
 
 // --- Componente Principale App ---
@@ -202,6 +251,7 @@ export default function App() {
     const [currentPage, setCurrentPage] = useState('dashboard');
     const [assistiti, setAssistiti] = useState([]);
     const [operators, setOperators] = useState(initialOperators);
+    const [documents, setDocuments] = useState([]);
     const [selectedAssistito, setSelectedAssistito] = useState(null);
     
     const handleAddAssistito = (anagrafica) => {
@@ -230,6 +280,20 @@ export default function App() {
             setSelectedAssistito(updatedPatient);
         }
     };
+    
+    const handleAddDocumento = (docData) => {
+        const fileUrl = URL.createObjectURL(docData.file);
+        const newDocument = {
+            id: Date.now(),
+            title: docData.title,
+            version: docData.version,
+            type: docData.type,
+            uploadDate: new Date().toLocaleDateString('it-IT'),
+            url: fileUrl,
+            file: docData.file
+        };
+        setDocuments(prev => [newDocument, ...prev]);
+    };
 
     const handleNavigation = (page) => setCurrentPage(page);
 
@@ -241,7 +305,7 @@ export default function App() {
             case 'diario-hub': return <DiarioAssistenzialeHub onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;
             case 'diario-view': return <DiarioAssistenzialeView onBack={() => handleNavigation('diario-hub')} assistito={selectedAssistito} onUpdateDiario={handleUpdateDiario} operators={operators} />;
             case 'operatori': return <Operatori onBack={() => handleNavigation('dashboard')} operators={operators} />;
-            case 'documentazione': return <Documentazione onBack={() => handleNavigation('dashboard')} />;
+            case 'documentazione': return <Documentazione onNavigate={handleNavigation} documents={documents} onAddDocumento={handleAddDocumento} />;
             case 'formazione': return <Formazione onBack={() => handleNavigation('dashboard')} />;
             case 'dashboard':
             default:
@@ -259,7 +323,7 @@ const Dashboard = ({ onNavigate }) => {
         { id: 'fascicolo-hub', title: 'Fascicolo Sanitario', description: 'Compila i dati clinici degli assistiti.', icon: <FileTextIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
         { id: 'diario-hub', title: 'Diario Assistenziale', description: 'Registra gli accessi e le attività giornaliere.', icon: <BookUserIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
         { id: 'operatori', title: 'Operatori', description: 'Anagrafica e turni del personale.', icon: <StethoscopeIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
-        { id: 'documentazione', title: 'Documentazione', description: 'Carica e consulta i documenti.', icon: <FolderUpIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
+        { id: 'documentazione', title: 'Documentazione', description: 'Carica e consulta i documenti.', icon: <FolderUpIcon className="w-6 h-6 text-cyan-300"/>, disabled: false },
         { id: 'formazione', title: 'Formazione', description: 'Materiale formativo e corsi per operatori.', icon: <GraduationCapIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
         { id: 'rischio', title: 'Rischio Clinico', description: 'Gestione e monitoraggio del rischio clinico.', icon: <ShieldAlertIcon className="w-6 h-6 text-cyan-300"/>, disabled: true },
     ];

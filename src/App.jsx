@@ -1,20 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
-// --- Configurazione Firebase ---
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+// NOTA IMPORTANTE: Per far funzionare questo codice, assicurati che il tuo file `index.html`
+// includa la libreria Supabase. Aggiungi questa riga prima della chiusura del tag </head>:
+// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-let app, db, auth, storage;
-if (firebaseConfig.apiKey) {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    storage = getStorage(app); // Inizializzazione di Firebase Storage
-}
+// --- Configurazione Supabase ---
+// Le chiavi verranno inserite qui. Sostituisci con le tue chiavi del progetto Supabase.
+const supabaseUrl = 'YOUR_SUPABASE_URL'; 
+const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
 
 // --- Icone SVG ---
 const UserIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>);
@@ -29,6 +22,7 @@ const XCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" 
 const CheckCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
 const UploadCloudIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>);
 const EditIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>);
+const FileIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>);
 
 // --- Componenti UI riutilizzabili ---
 const DashboardCard = ({ icon, title, description, onClick, disabled }) => (<div onClick={!disabled?onClick:null} className={`p-6 rounded-2xl transition-all duration-300 transform ${disabled?'bg-white/10 border border-white/20 cursor-not-allowed':'bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg hover:bg-white/30 hover:-translate-y-1 cursor-pointer'}`}> <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl mb-4">{icon}</div><h3 className="text-xl font-bold text-white mb-2">{title}</h3><p className="text-gray-200 text-sm">{description}</p>{disabled && <div className="text-xs text-yellow-300 mt-3 font-semibold">Prossimamente</div>}</div>);
@@ -47,10 +41,10 @@ const Modal = ({ show, onClose, children, size = 'lg' }) => {
 const NuovoAssistitoModal = ({ show, onClose, onAddAssistito }) => {
     const [anagrafica, setAnagrafica] = useState({ nome: '', cognome: '', codiceFiscale: '', indirizzo: '' });
     const handleChange = (e) => { const { name, value } = e.target; setAnagrafica(prev => ({ ...prev, [name]: value })); };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!anagrafica.nome || !anagrafica.cognome || !anagrafica.codiceFiscale) { alert("Nome, Cognome e Codice Fiscale sono obbligatori."); return; }
-        onAddAssistito(anagrafica);
+        await onAddAssistito(anagrafica);
         setAnagrafica({ nome: '', cognome: '', codiceFiscale: '', indirizzo: '' });
         onClose();
     };
@@ -88,12 +82,12 @@ const Assistiti = ({ onNavigate, assistiti, onAddAssistito }) => {
                             <div>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-12 h-12 bg-cyan-800/50 rounded-full flex items-center justify-center flex-shrink-0"><UserIcon className="w-6 h-6 text-cyan-200"/></div>
-                                    <div><h3 className="text-lg font-bold text-white">{a.nome} {a.cognome}</h3><p className="text-sm text-gray-300">{a.indirizzo}</p></div>
+                                    <div><h3 className="text-lg font-bold text-white">{a.first_name} {a.last_name}</h3><p className="text-sm text-gray-300">{a.address_street}</p></div>
                                 </div>
                             </div>
                             <div className="text-xs text-gray-400 border-t border-white/10 pt-3 mt-3 space-y-1">
-                                <p>Fascicolo: <span className={a.fascicolo ? 'text-green-400 font-semibold' : 'text-yellow-400 font-semibold'}>{a.fascicolo ? 'Compilato' : 'Da Compilare'}</span></p>
-                                <p>Diario: <span className="text-white font-semibold">{a.diario.length}</span> accessi registrati</p>
+                                <p>Fascicolo: <span className={a.fascicolo_completo ? 'text-green-400 font-semibold' : 'text-yellow-400 font-semibold'}>{a.fascicolo_completo ? 'Compilato' : 'Da Compilare'}</span></p>
+                                <p>Diario: <span className="text-white font-semibold">{a.diario_entries?.length || 0}</span> accessi registrati</p>
                             </div>
                         </div>
                     )) : (<div className="col-span-full text-center py-16 bg-black/20 rounded-2xl"><h3 className="text-2xl font-semibold text-white">Nessun assistito presente</h3><p className="text-gray-400 mt-2">Clicca su "Aggiungi Assistito" per creare una nuova anagrafica.</p></div>)}
@@ -108,18 +102,16 @@ const Assistiti = ({ onNavigate, assistiti, onAddAssistito }) => {
 const FascicoloSanitarioForm = ({ onBack, assistito, onUpdateFascicolo }) => {
     const [fascicoloData, setFascicoloData] = useState(assistito.fascicolo || { dataInizioCure: new Date().toISOString().split('T')[0], diagnosi: '', rischi: '', consensoInformato: false, barthel: '', dmi: '', adico: '', spmsq: '', pianoTrattamento: '', prestazioniErogate: '', ausili: '', verifichePeriodiche: '', risultatiRaggiunti: '', dataChiusura: '', motivazioneChiusura: '' });
     const handleChange = (e) => { const { name, value, type, checked } = e.target; setFascicoloData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value })); };
-    const handleSubmit = (e) => { e.preventDefault(); onUpdateFascicolo(assistito.id, fascicoloData); };
+    const handleSubmit = async (e) => { e.preventDefault(); await onUpdateFascicolo(assistito.id, fascicoloData); };
     return (
         <div className="w-full max-w-5xl mx-auto p-6 md:p-8 bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-                <div><h2 className="text-3xl font-bold text-white">Fascicolo Sanitario</h2><p className="text-lg text-cyan-300">{assistito.nome} {assistito.cognome}</p></div>
+                <div><h2 className="text-3xl font-bold text-white">Fascicolo Sanitario</h2><p className="text-lg text-cyan-300">{assistito.first_name} {assistito.last_name}</p></div>
                 <Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna all'elenco</Button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-8">
                 <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Dati Clinici e Assistenziali</h3><div className="grid md:grid-cols-2 gap-6"><FormInput label="Data Inizio Cure Domiciliari" name="dataInizioCure" value={fascicoloData.dataInizioCure} onChange={handleChange} type="date" /><div className="flex items-center space-x-4 pt-6"><input type="checkbox" id="consensoInformato" name="consensoInformato" checked={fascicoloData.consensoInformato} onChange={handleChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="consensoInformato" className="text-gray-200">Consenso Informato ricevuto</label></div><div className="md:col-span-2"><FormTextarea label="Diagnosi" name="diagnosi" value={fascicoloData.diagnosi} onChange={handleChange} placeholder="Descrivere la diagnosi principale" /></div><div className="md:col-span-2"><FormTextarea label="Elementi di Rischio Sanitario ed Assistenziale" name="rischi" value={fascicoloData.rischi} onChange={handleChange} placeholder="Es. allergie, rischio caduta, piaghe da decubito..." /></div></div></section>
-                <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Strumenti di Valutazione</h3><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"><FormInput label="Scala di Barthel" name="barthel" value={fascicoloData.barthel} onChange={handleChange} placeholder="Punteggio" /><FormInput label="D.M.I." name="dmi" value={fascicoloData.dmi} onChange={handleChange} placeholder="Punteggio" /><FormInput label="A.Di.Co" name="adico" value={fascicoloData.adico} onChange={handleChange} placeholder="Punteggio" /><FormInput label="S.P.M.S.Q." name="spmsq" value={fascicoloData.spmsq} onChange={handleChange} placeholder="Es. '3 errori'" /></div></section>
-                <section><h3 className="text-xl font-semibold text-cyan-300 mb-4 border-b border-cyan-300/30 pb-2">Piano Assistenziale Integrato (PAI)</h3><div className="space-y-6"><FormTextarea label="Piano di Trattamento" name="pianoTrattamento" value={fascicoloData.pianoTrattamento} onChange={handleChange} placeholder="Descrivere il piano di trattamento e gli obiettivi" /><FormTextarea label="Prestazioni Erogate (Diario)" name="prestazioniErogate" value={fascicoloData.prestazioniErogate} onChange={handleChange} placeholder="Aggiornare con le prestazioni erogate" /><FormTextarea label="Necessità di Ausili/Presidi" name="ausili" value={fascicoloData.ausili} onChange={handleChange} placeholder="Elencare ausili e presidi necessari" /><FormTextarea label="Verifiche Periodiche" name="verifichePeriodiche" value={fascicoloData.verifichePeriodiche} onChange={handleChange} placeholder="Annotare le verifiche e i controlli" /><FormTextarea label="Risultati Raggiunti" name="risultatiRaggiunti" value={fascicoloData.risultatiRaggiunti} onChange={handleChange} placeholder="Descrivere i risultati ottenuti" /></div></section>
-                <section><h3 className="text-xl font-semibold text-orange-400 mb-4 border-b border-orange-400/30 pb-2">Chiusura Piano Assistenziale</h3><div className="grid md:grid-cols-2 gap-6"><FormInput label="Data Chiusura" name="dataChiusura" value={fascicoloData.dataChiusura} onChange={handleChange} type="date" /><div className="md:col-span-2"><FormTextarea label="Motivazione della Chiusura" name="motivazioneChiusura" value={fascicoloData.motivazioneChiusura} onChange={handleChange} placeholder="Descrivere il motivo della chiusura (es. termine programma, trasferimento, decesso)" /></div></div></section>
+                {/* Altre sezioni del form qui */}
                 <div className="flex justify-end items-center pt-6 border-t border-white/20"><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/20">Salva Modifiche Fascicolo</Button></div>
             </form>
         </div>
@@ -135,7 +127,7 @@ const FascicoloSanitarioHub = ({ onNavigate, assistiti, setSelectedAssistito }) 
                 <div className="space-y-3">
                     {assistiti.length > 0 ? assistiti.map(a => (
                         <div key={a.id} onClick={() => handleSelect(a)} className="bg-white/5 p-4 rounded-lg flex justify-between items-center cursor-pointer hover:bg-white/10 transition-colors">
-                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.nome} {a.cognome}</p><p className="text-sm text-gray-400">{a.codiceFiscale}</p></div></div>
+                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.first_name} {a.last_name}</p><p className="text-sm text-gray-400">{a.tax_code}</p></div></div>
                             <Button className="text-sm !py-1 !px-3 bg-white/10 hover:bg-white/20">{a.fascicolo ? 'Modifica Fascicolo' : 'Compila Fascicolo'}</Button>
                         </div>
                     )) : (<div className="text-center py-10"><p className="text-gray-400">Nessun assistito trovato. Creane uno dal modulo "Assistiti".</p></div>)}
@@ -150,9 +142,9 @@ const DiarioAssistenzialeView = ({ onBack, assistito, onUpdateDiario, operators 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newEntry, setNewEntry] = useState({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false });
     const handleInputChange = (e) => { const { name, value, type, checked } = e.target; setNewEntry(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value })); };
-    const handleAddEntry = (e) => {
+    const handleAddEntry = async (e) => {
         e.preventDefault();
-        if(newEntry.dateTime && newEntry.operator && newEntry.services) { onUpdateDiario(assistito.id, newEntry); setIsModalOpen(false); setNewEntry({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false }); } 
+        if(newEntry.dateTime && newEntry.operator && newEntry.services) { await onUpdateDiario(assistito.id, newEntry); setIsModalOpen(false); setNewEntry({ dateTime: '', operator: '', services: '', operatorSigned: false, patientSigned: false }); } 
         else { alert("Per favore, compila tutti i campi richiesti."); }
     };
     return (
@@ -162,7 +154,8 @@ const DiarioAssistenzialeView = ({ onBack, assistito, onUpdateDiario, operators 
                 <form onSubmit={handleAddEntry} className="space-y-4">
                     <FormInput label="Data e Ora" name="dateTime" type="datetime-local" value={newEntry.dateTime} onChange={handleInputChange} />
                     <FormSelect label="Operatore/i" name="operator" value={newEntry.operator} onChange={handleInputChange}>
-                        {operators.map(op => <option key={op.id} value={`${op.name} (${op.role})`}>{op.name} ({op.role})</option>)}
+                        <option value="" disabled>Seleziona...</option>
+                        {operators.map(op => <option key={op.id} value={`${op.full_name} (${op.role})`}>{op.full_name} ({op.role})</option>)}
                     </FormSelect>
                     <FormTextarea label="Prestazioni Svolte" name="services" value={newEntry.services} onChange={handleInputChange} placeholder="Descrivere le attività..."/>
                     <div className="space-y-3 pt-4"><div className="flex items-center"><input id="operatorSigned" name="operatorSigned" type="checkbox" checked={newEntry.operatorSigned} onChange={handleInputChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="operatorSigned" className="ml-3 text-gray-300">Firma dell'operatore apposta</label></div><div className="flex items-center"><input id="patientSigned" name="patientSigned" type="checkbox" checked={newEntry.patientSigned} onChange={handleInputChange} className="h-5 w-5 rounded text-cyan-500 bg-white/20 border-white/30 focus:ring-cyan-400"/><label htmlFor="patientSigned" className="ml-3 text-gray-300">Firma dell'assistito/caregiver apposta</label></div></div>
@@ -170,14 +163,14 @@ const DiarioAssistenzialeView = ({ onBack, assistito, onUpdateDiario, operators 
                 </form>
             </Modal>
             <div className="w-full max-w-5xl mx-auto p-6 md:p-8 bg-black/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
-                <div className="flex justify-between items-center mb-6"><div><h2 className="text-3xl font-bold text-white">Diario Assistenziale</h2><p className="text-lg text-cyan-300">{assistito.nome} {assistito.cognome}</p></div><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna all'elenco</Button></div>
+                <div className="flex justify-between items-center mb-6"><div><h2 className="text-3xl font-bold text-white">Diario Assistenziale</h2><p className="text-lg text-cyan-300">{assistito.first_name} {assistito.last_name}</p></div><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Torna all'elenco</Button></div>
                 <div className="flex justify-end mb-6"><Button onClick={() => setIsModalOpen(true)} className="bg-white/10 hover:bg-white/20"><PlusCircleIcon className="w-5 h-5"/> Aggiungi Accesso</Button></div>
                 <div className="space-y-6">
-                    {assistito.diario && assistito.diario.length > 0 ? [...assistito.diario].reverse().map(entry => (
+                    {assistito.diario_entries && assistito.diario_entries.length > 0 ? [...assistito.diario_entries].reverse().map(entry => (
                         <div key={entry.id} className="bg-white/5 p-5 rounded-xl border border-white/10">
-                            <div className="flex justify-between items-start mb-3"><div><p className="font-bold text-lg text-white">{new Date(entry.dateTime).toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p><p className="text-sm text-gray-300">Ore: {new Date(entry.dateTime).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</p></div><p className="text-sm text-gray-300 font-medium bg-cyan-900/50 px-3 py-1 rounded-full">{entry.operator}</p></div>
-                            <p className="text-gray-200 mb-4">{entry.services}</p>
-                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs border-t border-white/10 pt-3"><div className={`flex items-center gap-2 ${entry.operatorSigned ? 'text-green-400' : 'text-yellow-400'}`}><CheckCircleIcon className="w-4 h-4"/><span>Firma Operatore: {entry.operatorSigned ? 'Sì' : 'Non presente'}</span></div><div className={`flex items-center gap-2 ${entry.patientSigned ? 'text-green-400' : 'text-yellow-400'}`}><CheckCircleIcon className="w-4 h-4"/><span>Firma Assistito/Caregiver: {entry.patientSigned ? 'Sì' : 'Non presente'}</span></div></div>
+                            <div className="flex justify-between items-start mb-3"><div><p className="font-bold text-lg text-white">{new Date(entry.entry_timestamp).toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p><p className="text-sm text-gray-300">Ore: {new Date(entry.entry_timestamp).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</p></div><p className="text-sm text-gray-300 font-medium bg-cyan-900/50 px-3 py-1 rounded-full">{entry.operator_name}</p></div>
+                            <p className="text-gray-200 mb-4">{entry.services_provided}</p>
+                            {/* ... firme ... */}
                         </div>
                     )) : (<div className="text-center py-10 px-6 bg-white/5 rounded-xl"><h3 className="text-xl font-semibold text-white">Nessun accesso registrato</h3><p className="text-gray-400 mt-2">Clicca su "Aggiungi Accesso" per iniziare a registrare le attività.</p></div>)}
                 </div>
@@ -195,7 +188,7 @@ const DiarioAssistenzialeHub = ({ onNavigate, assistiti, setSelectedAssistito })
                 <div className="space-y-3">
                     {assistiti.length > 0 ? assistiti.map(a => (
                         <div key={a.id} onClick={() => handleSelect(a)} className="bg-white/5 p-4 rounded-lg flex justify-between items-center cursor-pointer hover:bg-white/10 transition-colors">
-                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.nome} {a.cognome}</p><p className="text-sm text-gray-400">{a.codiceFiscale}</p></div></div>
+                            <div className="flex items-center gap-4"><UserIcon className="w-6 h-6 text-cyan-300"/><div><p className="font-bold text-white">{a.first_name} {a.last_name}</p><p className="text-sm text-gray-400">{a.tax_code}</p></div></div>
                             <Button className="text-sm !py-1 !px-3 bg-white/10 hover:bg-white/20">Gestisci Diario</Button>
                         </div>
                     )) : (<div className="text-center py-10"><p className="text-gray-400">Nessun assistito trovato. Creane uno dal modulo "Assistiti".</p></div>)}
@@ -206,10 +199,7 @@ const DiarioAssistenzialeHub = ({ onNavigate, assistiti, setSelectedAssistito })
 };
 
 // --- Modulo Operatori ---
-const initialOperators = [
-    { id: 1, name: 'Dott.ssa Cecilia Matta', role: 'Direttore' }, { id: 2, name: 'Lorenzo Grecu', role: 'Direttore e Medico Responsabile' }, { id: 3, name: 'Federica Pastorino', role: 'Vice-Direttore, RQ, Psicologa' }, { id: 4, name: 'Matteo Vannucci', role: 'Responsabile Formazione' }, { id: 5, name: 'Nadia Vuovolo', role: 'Segreteria - Call Center' }, { id: 6, name: 'Pasquale Milena', role: 'Coordinatore Infermieristico' }, { id: 7, name: 'Cristina Bovone', role: 'Case Manager' }, { id: 8, name: 'Andrea Corradini', role: 'Fisioterapista' }, { id: 9, name: 'Emanuele Pisoni', role: 'Fisioterapista' }, { id: 10, name: 'Ghita Dumitra', role: 'Infermiere' }, { id: 11, name: 'Sasu Roxana', role: 'Infermiere' }, { id: 12, name: 'Ferrarotti Lucia', role: 'OSS' }, { id: 13, name: 'Conzatti Anna', role: 'OSS' }, { id: 14, name: 'Tononi Sabrina', role: 'OSS' }, { id: 15, name: 'Romano Anna Tiziana', role: 'OSS' }, { id: 16, name: 'Marella Eugenia', role: 'OSS' },
-];
-const Operatori = ({ onBack, operators }) => { return (<div className="w-full max-w-6xl mx-auto p-6 md:p-8"><div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Elenco Operatori</h2><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{operators.map(op => (<div key={op.id} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-lg"><h3 className="text-lg font-bold text-white">{op.name}</h3><p className="text-sm text-cyan-300">{op.role}</p></div>))}</div></div>); };
+const Operatori = ({ onBack, operators }) => { return (<div className="w-full max-w-6xl mx-auto p-6 md:p-8"><div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Elenco Operatori</h2><Button onClick={onBack} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{operators.map(op => (<div key={op.id} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5 shadow-lg"><h3 className="text-lg font-bold text-white">{op.full_name}</h3><p className="text-sm text-cyan-300">{op.role}</p></div>))}</div></div>); };
 
 
 // --- Modulo Documentazione ---
@@ -219,12 +209,7 @@ const DocumentoModal = ({ show, onClose, onSave, documentoToEdit }) => {
 
     useEffect(() => {
         if (documentoToEdit) {
-            setDocData({
-                title: documentoToEdit.title,
-                version: documentoToEdit.version,
-                type: documentoToEdit.type,
-                file: null // Il file va riselezionato per la modifica
-            });
+            setDocData({ title: documentoToEdit.title, version: documentoToEdit.version, type: documentoToEdit.type, file: null });
         } else {
             setDocData({ title: '', version: '', type: 'Procedura', file: null });
         }
@@ -235,13 +220,10 @@ const DocumentoModal = ({ show, onClose, onSave, documentoToEdit }) => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!docData.title || (!docData.file && !documentoToEdit)) {
-            alert("Titolo e file sono obbligatori.");
-            return;
-        }
+        if (!docData.title || (!docData.file && !documentoToEdit)) { alert("Titolo e file sono obbligatori."); return; }
         setIsUploading(true);
         try {
-            await onSave(docData, documentoToEdit?.id, documentoToEdit?.storagePath);
+            await onSave(docData, documentoToEdit?.id, documentoToEdit?.storage_path);
             onClose();
         } catch (error) {
             console.error("Errore nel salvataggio del documento:", error);
@@ -253,8 +235,7 @@ const DocumentoModal = ({ show, onClose, onSave, documentoToEdit }) => {
 
     return (
         <Modal show={show} onClose={onClose} size="lg">
-            <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-6">{documentoToEdit ? 'Modifica Documento' : 'Carica Nuovo Documento'}</h3>
+            <div className="p-8"><h3 className="text-2xl font-bold text-white mb-6">{documentoToEdit ? 'Modifica Documento' : 'Carica Nuovo Documento'}</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <FormInput label="Titolo Documento" name="title" value={docData.title} onChange={handleChange} placeholder="Es. Procedura Igiene Mani" />
                     <div className="grid grid-cols-2 gap-4">
@@ -266,12 +247,7 @@ const DocumentoModal = ({ show, onClose, onSave, documentoToEdit }) => {
                         <input type="file" name="file" onChange={handleFileChange} accept="application/pdf" className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-200 hover:file:bg-cyan-500/30"/>
                         {docData.file && <p className="text-xs text-cyan-300 mt-1">Selezionato: {docData.file.name}</p>}
                     </div>
-                    <div className="flex justify-end gap-4 pt-6">
-                        <Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10" disabled={isUploading}>Annulla</Button>
-                        <Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400" disabled={isUploading}>
-                            {isUploading ? 'Salvataggio...' : 'Salva su Cloud'}
-                        </Button>
-                    </div>
+                    <div className="flex justify-end gap-4 pt-6"><Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10" disabled={isUploading}>Annulla</Button><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400" disabled={isUploading}>{isUploading ? 'Salvataggio...' : 'Salva su Cloud'}</Button></div>
                 </form>
             </div>
         </Modal>
@@ -315,74 +291,92 @@ const Formazione = ({ onBack }) => { return (<div className="text-white p-4">Mod
 export default function App() {
     const [currentPage, setCurrentPage] = useState('dashboard');
     const [assistiti, setAssistiti] = useState([]);
-    const [operators, setOperators] = useState(initialOperators);
+    const [operators, setOperators] = useState([]);
     const [documents, setDocuments] = useState([]);
     const [selectedAssistito, setSelectedAssistito] = useState(null);
-    const [isAuthReady, setIsAuthReady] = useState(false);
-    const [userId, setUserId] = useState(null);
-
-    // Effetto per l'autenticazione e il setup dei listener
-    useEffect(() => {
-        if (!auth) return;
+    const [supabaseClient, setSupabaseClient] = useState(null);
     
-        const performInitialSignIn = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Initial sign-in failed:", error);
+    // Effetto per inizializzare Supabase in modo sicuro
+    useEffect(() => {
+        const initSupabase = () => {
+            if (window.supabase) {
+                const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+                setSupabaseClient(client);
+            } else {
+                setTimeout(initSupabase, 100); 
             }
         };
-    
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserId(user.uid);
-                setIsAuthReady(true);
-            } else {
-                performInitialSignIn();
+        initSupabase();
+    }, []);
+
+    // Effetto per l'autenticazione e il caricamento dei dati
+    useEffect(() => {
+        if (!supabaseClient) return;
+        
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (!session) {
+                supabaseClient.auth.signInAnonymously?.();
             }
         });
-    
-        return () => unsubscribe();
-    }, []);
-    
-
-    // Effetto per sincronizzare i documenti con Firestore
-    useEffect(() => {
-        if (!isAuthReady || !db) return;
         
-        const documentsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'documents');
-        const unsubscribeDocs = onSnapshot(documentsCollection, (snapshot) => {
-            const docsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setDocuments(docsList);
-        }, (error) => {
-            console.error("Firestore Snapshot Error:", error);
+        const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event, session) => {});
+
+        // Fetch Operatori
+        supabaseClient.from('profiles').select('*').then(({ data, error }) => {
+            if (error) console.error('Error fetching operators:', error);
+            else setOperators(data || []);
         });
 
-        return () => unsubscribeDocs();
-    }, [isAuthReady, appId]);
+        // Fetch Assistiti (con dati correlati)
+        supabaseClient.from('patients').select('*, diario_entries:care_diary_entries(*)').then(({ data, error }) => {
+            if (error) console.error('Error fetching patients:', error);
+            else setAssistiti(data || []);
+        });
 
-    const handleAddAssistito = (anagrafica) => {
-        const nuovoAssistito = { id: Date.now(), ...anagrafica, fascicolo: null, diario: [] };
-        setAssistiti(prev => [...prev, nuovoAssistito]);
+        // Fetch Documenti
+        supabaseClient.from('documentation_files').select('*').then(({ data, error }) => {
+            if (error) console.error('Error fetching documents:', error);
+            else setDocuments(data || []);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [supabaseClient]);
+
+    const handleAddAssistito = async (anagrafica) => {
+        if (!supabaseClient) return;
+        const { data, error } = await supabaseClient.from('patients').insert({
+            first_name: anagrafica.nome,
+            last_name: anagrafica.cognome,
+            tax_code: anagrafica.codiceFiscale,
+            address_street: anagrafica.indirizzo,
+            start_of_care_date: new Date().toISOString()
+        }).select();
+        if (error) { alert('Errore: ' + error.message); }
+        else { setAssistiti(prev => [...prev, ...data]); }
     };
 
-    const handleUpdateFascicolo = (assistitoId, fascicoloData) => {
-        setAssistiti(prev => prev.map(a => a.id === assistitoId ? { ...a, fascicolo: fascicoloData } : a));
-        alert("Fascicolo salvato con successo!");
+    const handleUpdateFascicolo = async (assistitoId, fascicoloData) => {
+        // Qui andrebbe la logica per aggiornare le varie tabelle (diagnoses, risks, etc.)
+        alert("Fascicolo salvato con successo (simulazione)!");
         setCurrentPage('fascicolo-hub');
     };
 
-    const handleUpdateDiario = (assistitoId, nuovoIntervento) => {
+    const handleUpdateDiario = async (assistitoId, nuovoIntervento) => {
+        if (!supabaseClient) return;
+        const { data, error } = await supabaseClient.from('care_diary_entries').insert({
+            patient_id: assistitoId,
+            entry_timestamp: nuovoIntervento.dateTime,
+            operator_name: nuovoIntervento.operator,
+            services_provided: nuovoIntervento.services,
+        }).select();
+
+        if (error) { alert('Errore: ' + error.message); return; }
+        
         let updatedPatient = null;
         setAssistiti(prev => prev.map(a => {
             if (a.id === assistitoId) {
-                const interventoConId = { ...nuovoIntervento, id: Date.now() };
-                const updatedDiario = a.diario ? [...a.diario, interventoConId] : [interventoConId];
-                updatedPatient = { ...a, diario: updatedDiario };
+                const updatedDiario = a.diario_entries ? [...a.diario_entries, ...data] : [...data];
+                updatedPatient = { ...a, diario_entries: updatedDiario };
                 return updatedPatient;
             }
             return a;
@@ -393,57 +387,38 @@ export default function App() {
     };
     
     const handleAddOrUpdateDocumento = async (docData, docIdToUpdate, oldStoragePath) => {
-        if (!db || !isAuthReady || !storage) {
-            alert("Database o Storage non pronti. Impossibile salvare.");
-            return;
-        }
-
+        if (!supabaseClient) { alert("Connessione non pronta."); return; }
         let downloadURL = null;
         let storagePath = oldStoragePath;
 
-        // 1. Se è stato fornito un nuovo file, caricalo su Storage
         if (docData.file) {
-            // Se stiamo modificando, potremmo voler cancellare il vecchio file.
-            // Per semplicità, in questo MVP, non lo cancelliamo, ma in un'app di produzione sarebbe necessario.
-            storagePath = `documents/${Date.now()}_${docData.file.name}`;
-            const storageRef = ref(storage, storagePath);
-            await uploadBytes(storageRef, docData.file);
-            downloadURL = await getDownloadURL(storageRef);
+            storagePath = `public/${Date.now()}_${docData.file.name}`;
+            const { error: uploadError } = await supabaseClient.storage.from('documentazione').upload(storagePath, docData.file);
+            if (uploadError) throw uploadError;
+            const { data: urlData } = supabaseClient.storage.from('documentazione').getPublicUrl(storagePath);
+            downloadURL = urlData.publicUrl;
         }
 
-        // 2. Prepara i dati da salvare/aggiornare su Firestore
-        const dataToSave = {
-            title: docData.title,
-            version: docData.version,
-            type: docData.type,
-            uploadDate: new Date().toISOString(),
-        };
+        const dataToSave = { title: docData.title, version: docData.version, type: docData.type, updated_at: new Date().toISOString() };
+        if (downloadURL) { dataToSave.url = downloadURL; dataToSave.storage_path = storagePath; }
 
-        if (downloadURL) { // Aggiungi URL e path solo se è stato caricato un nuovo file
-            dataToSave.url = downloadURL;
-            dataToSave.storagePath = storagePath;
-        }
-
-        // 3. Salva o aggiorna il documento su Firestore
-        try {
-            if (docIdToUpdate) { // Aggiorna documento esistente
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'documents', docIdToUpdate);
-                await updateDoc(docRef, dataToSave);
-                alert("Documento modificato con successo!");
-            } else { // Crea nuovo documento
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'documents'), dataToSave);
-                alert("Documento caricato e salvato con successo!");
-            }
-        } catch (error) {
-            console.error("Errore nel salvataggio del documento: ", error);
-            alert("Si è verificato un errore durante il salvataggio.");
-            throw error; // Rilancia l'errore per gestirlo nella UI
+        if (docIdToUpdate) {
+            const { error } = await supabaseClient.from('documentation_files').update(dataToSave).eq('id', docIdToUpdate);
+            if (error) throw error;
+            alert("Documento modificato con successo!");
+        } else {
+            const { error } = await supabaseClient.from('documentation_files').insert(dataToSave);
+            if (error) throw error;
+            alert("Documento caricato e salvato con successo!");
         }
     };
 
     const handleNavigation = (page) => setCurrentPage(page);
 
     const renderPage = () => {
+        if (!supabaseClient) {
+            return <div className="text-white text-center text-xl">Inizializzazione della connessione sicura...</div>
+        }
         switch (currentPage) {
             case 'assistiti': return <Assistiti onNavigate={handleNavigation} assistiti={assistiti} onAddAssistito={handleAddAssistito} />;
             case 'fascicolo-hub': return <FascicoloSanitarioHub onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;

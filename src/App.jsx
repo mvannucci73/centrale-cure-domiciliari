@@ -351,7 +351,7 @@ export default function App() {
             address_street: anagrafica.indirizzo,
             start_of_care_date: new Date().toISOString()
         }).select();
-        if (error) { alert('Errore: ' + error.message); }
+        if (error) { alert('Errore: ' + (error.message || JSON.stringify(error))); }
         else { setAssistiti(prev => [...prev, ...data]); }
     };
 
@@ -370,7 +370,7 @@ export default function App() {
             services_provided: nuovoIntervento.services,
         }).select();
 
-        if (error) { alert('Errore: ' + error.message); return; }
+        if (error) { alert('Errore: ' + (error.message || JSON.stringify(error))); return; }
         
         let updatedPatient = null;
         setAssistiti(prev => prev.map(a => {

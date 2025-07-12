@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 // --- Configurazione Firebase ---
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
@@ -28,6 +28,7 @@ const PlusCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/sv
 const XCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>);
 const CheckCircleIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>);
 const UploadCloudIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>);
+const EditIcon = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>);
 
 // --- Componenti UI riutilizzabili ---
 const DashboardCard = ({ icon, title, description, onClick, disabled }) => (<div onClick={!disabled?onClick:null} className={`p-6 rounded-2xl transition-all duration-300 transform ${disabled?'bg-white/10 border border-white/20 cursor-not-allowed':'bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg hover:bg-white/30 hover:-translate-y-1 cursor-pointer'}`}> <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl mb-4">{icon}</div><h3 className="text-xl font-bold text-white mb-2">{title}</h3><p className="text-gray-200 text-sm">{description}</p>{disabled && <div className="text-xs text-yellow-300 mt-3 font-semibold">Prossimamente</div>}</div>);
@@ -212,45 +213,93 @@ const Operatori = ({ onBack, operators }) => { return (<div className="w-full ma
 
 
 // --- Modulo Documentazione ---
-const NuovoDocumentoModal = ({ show, onClose, onAddDocumento }) => {
+const DocumentoModal = ({ show, onClose, onSave, documentoToEdit }) => {
     const [docData, setDocData] = useState({ title: '', version: '', type: 'Procedura', file: null });
+    const [isUploading, setIsUploading] = useState(false);
+
+    useEffect(() => {
+        if (documentoToEdit) {
+            setDocData({
+                title: documentoToEdit.title,
+                version: documentoToEdit.version,
+                type: documentoToEdit.type,
+                file: null // Il file va riselezionato per la modifica
+            });
+        } else {
+            setDocData({ title: '', version: '', type: 'Procedura', file: null });
+        }
+    }, [documentoToEdit, show]);
+
     const handleFileChange = (e) => { setDocData(prev => ({ ...prev, file: e.target.files[0] })); };
     const handleChange = (e) => { const { name, value } = e.target; setDocData(prev => ({ ...prev, [name]: value })); };
-    const handleSubmit = (e) => {
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!docData.title || !docData.file) { alert("Titolo e file sono obbligatori."); return; }
-        onAddDocumento(docData);
-        setDocData({ title: '', version: '', type: 'Procedura', file: null });
-        onClose();
+        if (!docData.title || (!docData.file && !documentoToEdit)) {
+            alert("Titolo e file sono obbligatori.");
+            return;
+        }
+        setIsUploading(true);
+        try {
+            await onSave(docData, documentoToEdit?.id, documentoToEdit?.storagePath);
+            onClose();
+        } catch (error) {
+            console.error("Errore nel salvataggio del documento:", error);
+            alert("Si è verificato un errore durante il salvataggio.");
+        } finally {
+            setIsUploading(false);
+        }
     };
+
     return (
         <Modal show={show} onClose={onClose} size="lg">
-            <div className="p-8"><h3 className="text-2xl font-bold text-white mb-6">Carica Nuovo Documento</h3>
+            <div className="p-8">
+                <h3 className="text-2xl font-bold text-white mb-6">{documentoToEdit ? 'Modifica Documento' : 'Carica Nuovo Documento'}</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <FormInput label="Titolo Documento" name="title" value={docData.title} onChange={handleChange} placeholder="Es. Procedura Igiene Mani" />
                     <div className="grid grid-cols-2 gap-4">
                         <FormInput label="Versione" name="version" value={docData.version} onChange={handleChange} placeholder="Es. 1.0" />
                         <FormSelect label="Tipo" name="type" value={docData.type} onChange={handleChange}><option>Procedura</option><option>Linea Guida</option></FormSelect>
                     </div>
-                    <div><label className="block text-sm font-medium text-gray-200 mb-1">File PDF</label><input type="file" name="file" onChange={handleFileChange} accept="application/pdf" className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-200 hover:file:bg-cyan-500/30"/></div>
-                    <div className="flex justify-end gap-4 pt-6"><Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10">Annulla</Button><Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400">Carica Documento</Button></div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-200 mb-1">{documentoToEdit ? 'Sostituisci File PDF (opzionale)' : 'File PDF'}</label>
+                        <input type="file" name="file" onChange={handleFileChange} accept="application/pdf" className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/20 file:text-cyan-200 hover:file:bg-cyan-500/30"/>
+                        {docData.file && <p className="text-xs text-cyan-300 mt-1">Selezionato: {docData.file.name}</p>}
+                    </div>
+                    <div className="flex justify-end gap-4 pt-6">
+                        <Button onClick={onClose} className="bg-transparent text-gray-300 hover:bg-white/10" disabled={isUploading}>Annulla</Button>
+                        <Button type="submit" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400" disabled={isUploading}>
+                            {isUploading ? 'Salvataggio...' : 'Salva su Cloud'}
+                        </Button>
+                    </div>
                 </form>
             </div>
         </Modal>
     );
 };
-const Documentazione = ({ onNavigate, documents, onAddDocumento }) => {
+
+const Documentazione = ({ onNavigate, documents, onAddOrUpdateDocumento }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [documentoToEdit, setDocumentoToEdit] = useState(null);
+
+    const handleOpenModal = (doc = null) => {
+        setDocumentoToEdit(doc);
+        setIsModalOpen(true);
+    };
+
     return (
         <>
-            <NuovoDocumentoModal show={isModalOpen} onClose={() => setIsModalOpen(false)} onAddDocumento={onAddDocumento} />
+            <DocumentoModal show={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={onAddOrUpdateDocumento} documentoToEdit={documentoToEdit} />
             <div className="w-full max-w-6xl mx-auto p-6 md:p-8">
-                <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Documentazione</h2><div className="flex gap-4"><Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-cyan-500 to-blue-500"><UploadCloudIcon className="w-5 h-5"/> Carica Documento</Button><Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div></div>
+                <div className="flex justify-between items-center mb-8"><h2 className="text-4xl font-bold text-white">Documentazione</h2><div className="flex gap-4"><Button onClick={() => handleOpenModal()} className="bg-gradient-to-r from-cyan-500 to-blue-500"><UploadCloudIcon className="w-5 h-5"/> Carica Documento</Button><Button onClick={() => onNavigate('dashboard')} className="bg-white/10 hover:bg-white/20">&larr; Dashboard</Button></div></div>
                 <div className="bg-black/20 backdrop-blur-xl border border-white/20 rounded-2xl p-6 space-y-4">
                     {documents.length > 0 ? documents.map(doc => (
                         <div key={doc.id} className="bg-white/5 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-4">
                             <div className="flex items-center gap-4"><div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0"><FileTextIcon className="w-6 h-6 text-gray-300"/></div><div><h3 className="text-lg font-bold text-white">{doc.title}</h3><p className="text-sm text-gray-400">Versione: {doc.version} - Tipo: {doc.type}</p></div></div>
-                            <Button onClick={() => window.open(doc.url, '_blank')} className="bg-white/10 hover:bg-white/20 text-sm" disabled={!doc.url}>Visualizza</Button>
+                            <div className="flex gap-2">
+                                <Button onClick={() => window.open(doc.url, '_blank')} className="bg-white/10 hover:bg-white/20 text-sm" disabled={!doc.url}>Visualizza</Button>
+                                <Button onClick={() => handleOpenModal(doc)} className="bg-white/10 hover:bg-white/20 text-sm"><EditIcon className="w-4 h-4"/> Modifica</Button>
+                            </div>
                         </div>
                     )) : (<div className="text-center py-16"><h3 className="text-2xl font-semibold text-white">Nessun documento caricato</h3><p className="text-gray-400 mt-2">Clicca su "Carica Documento" per iniziare.</p></div>)}
                 </div>
@@ -293,7 +342,6 @@ export default function App() {
                 setUserId(user.uid);
                 setIsAuthReady(true);
             } else {
-                // Se non c'è utente, prova a fare il login
                 performInitialSignIn();
             }
         });
@@ -344,35 +392,52 @@ export default function App() {
         }
     };
     
-    const handleAddDocumento = async (docData) => {
+    const handleAddOrUpdateDocumento = async (docData, docIdToUpdate, oldStoragePath) => {
         if (!db || !isAuthReady || !storage) {
             alert("Database o Storage non pronti. Impossibile salvare.");
             return;
         }
-        try {
-            // 1. Carica il file su Firebase Storage
-            const storageRef = ref(storage, `documents/${Date.now()}_${docData.file.name}`);
+
+        let downloadURL = null;
+        let storagePath = oldStoragePath;
+
+        // 1. Se è stato fornito un nuovo file, caricalo su Storage
+        if (docData.file) {
+            // Se stiamo modificando, potremmo voler cancellare il vecchio file.
+            // Per semplicità, in questo MVP, non lo cancelliamo, ma in un'app di produzione sarebbe necessario.
+            storagePath = `documents/${Date.now()}_${docData.file.name}`;
+            const storageRef = ref(storage, storagePath);
             await uploadBytes(storageRef, docData.file);
+            downloadURL = await getDownloadURL(storageRef);
+        }
 
-            // 2. Ottieni l'URL di download permanente
-            const downloadURL = await getDownloadURL(storageRef);
+        // 2. Prepara i dati da salvare/aggiornare su Firestore
+        const dataToSave = {
+            title: docData.title,
+            version: docData.version,
+            type: docData.type,
+            uploadDate: new Date().toISOString(),
+        };
 
-            // 3. Salva i metadati e l'URL su Firestore
-            const docToSave = {
-                title: docData.title,
-                version: docData.version,
-                type: docData.type,
-                fileName: docData.file.name,
-                uploadDate: new Date().toISOString(),
-                url: downloadURL, // Salva l'URL permanente
-            };
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'documents'), docToSave);
-            
-            alert("Documento caricato e salvato con successo!");
+        if (downloadURL) { // Aggiungi URL e path solo se è stato caricato un nuovo file
+            dataToSave.url = downloadURL;
+            dataToSave.storagePath = storagePath;
+        }
 
+        // 3. Salva o aggiorna il documento su Firestore
+        try {
+            if (docIdToUpdate) { // Aggiorna documento esistente
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'documents', docIdToUpdate);
+                await updateDoc(docRef, dataToSave);
+                alert("Documento modificato con successo!");
+            } else { // Crea nuovo documento
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'documents'), dataToSave);
+                alert("Documento caricato e salvato con successo!");
+            }
         } catch (error) {
             console.error("Errore nel salvataggio del documento: ", error);
             alert("Si è verificato un errore durante il salvataggio.");
+            throw error; // Rilancia l'errore per gestirlo nella UI
         }
     };
 
@@ -386,7 +451,7 @@ export default function App() {
             case 'diario-hub': return <DiarioAssistenzialeHub onNavigate={handleNavigation} assistiti={assistiti} setSelectedAssistito={setSelectedAssistito} />;
             case 'diario-view': return <DiarioAssistenzialeView onBack={() => handleNavigation('diario-hub')} assistito={selectedAssistito} onUpdateDiario={handleUpdateDiario} operators={operators} />;
             case 'operatori': return <Operatori onBack={() => handleNavigation('dashboard')} operators={operators} />;
-            case 'documentazione': return <Documentazione onNavigate={handleNavigation} documents={documents} onAddDocumento={handleAddDocumento} />;
+            case 'documentazione': return <Documentazione onNavigate={handleNavigation} documents={documents} onAddOrUpdateDocumento={handleAddOrUpdateDocumento} />;
             case 'formazione': return <Formazione onBack={() => handleNavigation('dashboard')} />;
             case 'dashboard':
             default:
